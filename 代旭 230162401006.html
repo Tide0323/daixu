@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>兰州理工大学 · 智慧教务 | 登录 · 课表系统</title>
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #eef5ff 0%, #d9e8fb 100%);
+            min-height: 100vh;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 主容器 */
+        .app-container {
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* ========= 登录页面样式 ========= */
+        .login-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-card {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.25), 0 8px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        .login-header {
+            background: linear-gradient(145deg, #0b2b44 0%, #123e5e 100%);
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-header::before {
+            content: "";
+            position: absolute;
+            top: -30%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="rgba(255,255,255,0.08)"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>') no-repeat center;
+            background-size: contain;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .university-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-header p {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .login-body {
+            padding: 2rem 1.8rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 1.8rem;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 0.5rem 0 0.8rem;
+            cursor: pointer;
+            color: #6c757d;
+            transition: 0.2s;
+            font-family: inherit;
+            position: relative;
+        }
+
+        .tab-btn.active {
+            color: #0b2b44;
+        }
+
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #0b2b44;
+            border-radius: 3px;
+        }
+
+        .form-box {
+            display: none;
+            animation: fade 0.25s ease;
+        }
+
+        .form-box.active-form {
+            display: block;
+        }
+
+        @keyframes fade {
+            from { opacity: 0; transform: translateY(5px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .input-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+            color: #2c3e4e;
+        }
+
+        .input-group label i {
+            width: 20px;
+            color: #0b2b44;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 0.92rem;
+            border: 1.5px solid #e2edf2;
+            border-radius: 1rem;
+            transition: all 0.2s;
+            font-family: inherit;
+            background: #fefefe;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #1e6f5c;
+            box-shadow: 0 0 0 3px rgba(30,111,92,0.1);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #0b2b44;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 0.5rem;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-submit:hover {
+            background: #1a4768;
+            transform: scale(0.98);
+        }
+
+        .extra-links {
+            margin-top: 1.2rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .extra-links a {
+            color: #0b2b44;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .extra-links a:hover {
+            text-decoration: underline;
+        }
+
+        .message-tip {
+            font-size: 0.8rem;
+            margin-top: 0.6rem;
+            text-align: center;
+            min-height: 28px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            font-size: 0.7rem;
+            color: #8d9aa7;
+            border-top: 1px solid #eef2f5;
+        }
+
+        /* ========= 课表页面样式 ========= */
+        .timetable-panel {
+            background: white;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.2);
+            padding: 1.8rem;
+            animation: fade 0.3s ease;
+            display: none;
+        }
+
+        .timetable-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #eef2f5;
+            gap: 1rem;
+        }
+
+        .semester-info h3 {
+            font-size: 1.4rem;
+            color: #0b2b44;
+        }
+
+        .semester-info p {
+            font-size: 0.85rem;
+            color: #5a6874;
+            margin-top: 4px;
+        }
+
+        .week-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #f8fafc;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .week-control button {
+            background: #0b2b44;
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .week-control button:hover {
+            background: #1a4768;
+            transform: scale(1.05);
+        }
+
+        .week-control span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            min-width: 90px;
+            text-align: center;
+            color: #0b2b44;
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .personal-card {
+            background: linear-gradient(135deg, #0b2b44 0%, #1a4768 100%);
+            padding: 0.6rem 1.2rem;
+            border-radius: 2rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .personal-card i {
+            font-size: 1.2rem;
+        }
+
+        .personal-info-text {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .personal-info-text .name {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .personal-info-text .details {
+            font-size: 0.7rem;
+            opacity: 0.9;
+        }
+
+        .logout-btn {
+            background: #f0f3f8;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn:hover {
+            background: #e0e6ef;
+        }
+
+        .schedule-table-wrapper {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+        }
+
+        .schedule-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 750px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .schedule-table th, .schedule-table td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 10px;
+            vertical-align: top;
+            background-color: #fff;
+        }
+
+        .schedule-table th {
+            background: #f8fafc;
+            font-weight: 600;
+            color: #1e3a5f;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .time-slot {
+            background: #f1f5f9;
+            font-weight: 600;
+            width: 100px;
+            text-align: center;
+            color: #0b2b44;
+        }
+
+        .course-item {
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px dashed #e9ecef;
+        }
+        .course-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .course-name {
+            font-weight: 700;
+            color: #0b2b44;
+            font-size: 0.9rem;
+        }
+        .course-detail {
+            font-size: 0.7rem;
+            color: #5a6874;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+        .no-course {
+            color: #adb5bd;
+            font-style: italic;
+            font-size: 0.75rem;
+            text-align: center;
+            display: block;
+        }
+
+        .notice-area {
+            margin-top: 1.8rem;
+            background: #fef9e3;
+            padding: 1rem 1.2rem;
+            border-radius: 1rem;
+            border-left: 5px solid #ffb74d;
+        }
+
+        .notice-area p {
+            margin: 6px 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .notice-area i {
+            margin-right: 6px;
+            color: #f39c12;
+        }
+
+        .timetable-footer {
+            text-align: center;
+            margin-top: 1.8rem;
+            padding-top: 1rem;
+            font-size: 0.7rem;
+            color: #8d9aa7;
+            border-top: 1px solid #eef2f5;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 1rem;
+            }
+            .timetable-panel {
+                padding: 1rem;
+            }
+            .timetable-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .week-control {
+                justify-content: center;
+            }
+            .student-info {
+                justify-content: space-between;
+            }
+            .personal-card {
+                padding: 0.4rem 1rem;
+            }
+            .login-body {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="university-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h2>兰州理工大学</h2>
+                <p>Lanzhou University of Technology</p>
+                <p style="font-size: 0.7rem; margin-top: 8px;">智慧教务系统</p>
+            </div>
+
+            <div class="login-body">
+                <div class="tabs">
+                    <button class="tab-btn active" id="tabLoginBtn">登录</button>
+                    <button class="tab-btn" id="tabRegBtn">注册</button>
+                </div>
+
+                <!-- 登录表单 -->
+                <div id="loginForm" class="form-box active-form">
+                    <form id="loginFormElement">
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> 邮箱 / 学号</label>
+                            <input type="text" id="loginUsername" placeholder="学号或邮箱" autocomplete="username">
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i> 密码</label>
+                            <input type="password" id="loginPassword" placeholder="密码" autocomplete="current-password">
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-sign-in-alt"></i> 登录</button>
+                        <div id="loginMsg" class="message-tip"></div>
+                    </form>
+                    <div class="extra-links">
+                        <a href="#" id="switchToReg">还没有账号？立即注册</a>
+                    </div>
+                </div>
+
+                <!-- 注册表单 -->
+                <div id="registerForm" class="form-box">
+                    <form id="registerFormElement">
+                        <div class="input-group">
+                            <label><i class="fas fa-user-graduate"></i> 真实姓名</label>
+                            <input type="text" id="regName" placeholder="例如：代旭" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-id-badge"></i> 学号</label>
+                            <input type="text" id="regStudentId" placeholder="学号" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-envelope"></i> 电子邮箱</label>
+                            <input type="email" id="regEmail" placeholder="邮箱" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-lock"></i> 设置密码</label>
+                            <input type="password" id="regPassword" placeholder="至少6位" required>
+                        </div>
+                        <div class="input-group">
+                            <label><i class="fas fa-check-circle"></i> 确认密码</label>
+                            <input type="password" id="regConfirmPwd" placeholder="再次输入密码" required>
+                        </div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-user-plus"></i> 注册新账号</button>
+                        <div id="regMsg" class="message-tip"></div>
+                    </form>
+                    <div class="extra-links">
+                        <a href="#" id="switchToLogin">已有账号？立即登录</a>
+                    </div>
+                </div>
+                <footer>
+                    <i class="fas fa-copyright"></i> 兰州理工大学 计算机与人工智能学院
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- 课表页面 -->
+    <div id="timetablePage" class="timetable-panel">
+        <div class="timetable-header">
+            <div class="semester-info">
+                <h3><i class="fas fa-calendar-alt"></i> 2025-2026学年 春季学期课程表</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 计算机与人工智能学院 · 计算机科学与技术</p>
+            </div>
+            <div class="week-control">
+                <button id="prevWeekBtn"><i class="fas fa-chevron-left"></i></button>
+                <span id="currentWeekDisplay">第1周</span>
+                <button id="nextWeekBtn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="student-info">
+                <div class="personal-card" id="personalCard">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="personal-info-text">
+                        <span class="name" id="userName">加载中...</span>
+                        <span class="details" id="userDetails">学号: 加载中</span>
+                    </div>
+                </div>
+                <button id="logoutBtn" class="logout-btn"><i class="fas fa-sign-out-alt"></i> 退出登录</button>
+            </div>
+        </div>
+        
+        <div class="schedule-table-wrapper">
+            <table class="schedule-table">
+                <thead>
+                    <tr><th>节次/星期</th><th>星期一</th><th>星期二</th><th>星期三</th><th>星期四</th><th>星期五</th><th>星期六</th><th>星期日</th></tr>
+                </thead>
+                <tbody id="timetableBody"></tbody>
+            </table>
+        </div>
+        
+        <div class="notice-area" id="noticeArea">
+            <p><i class="fas fa-info-circle"></i> <strong>📌 课程说明：</strong> 点击上方按钮切换周次查看对应周次课程安排</p>
+        </div>
+        
+        <div class="timetable-footer">
+            <i class="fas fa-copyright"></i> 兰州理工大学 计算机与人工智能学院 | 学号:230162401006 代旭 | 数据源自教务系统
+        </div>
+    </div>
+</div>
+
+<script>
+    // ================= 用户系统 =================
+    let currentLoggedUser = null;
+    let currentWeek = 1;
+
+    // 初始化用户数据
+    function initUsers() {
+        let users = localStorage.getItem("LUT_users_complete");
+        if(!users) {
+            const defaultUsers = [
+                { name: "代旭", studentId: "230162401006", email: "daixu@lut.edu.cn", password: "123456" },
+                { name: "红柳学子", studentId: "20240001", email: "hongliu@lut.edu.cn", password: "lut123" }
+            ];
+            localStorage.setItem("LUT_users_complete", JSON.stringify(defaultUsers));
+        }
+    }
+    initUsers();
+
+    function getUsers() { return JSON.parse(localStorage.getItem("LUT_users_complete")) || []; }
+    function saveUsers(users) { localStorage.setItem("LUT_users_complete", JSON.stringify(users)); }
+
+    // 显示课表页面
+    function showTimetablePage() {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("timetablePage").style.display = "block";
+        
+        // 更新个人信息显示
+        if(currentLoggedUser) {
+            document.getElementById("userName").innerHTML = `${currentLoggedUser.name}`;
+            document.getElementById("userDetails").innerHTML = `学号: ${currentLoggedUser.studentId} | 计算机与人工智能学院`;
+        }
+        
+        // 渲染课表
+        currentWeek = 1;
+        updateWeekDisplay();
+    }
+
+    // 显示登录页面
+    function showLoginPage() {
+        document.getElementById("loginPage").style.display = "flex";
+        document.getElementById("timetablePage").style.display = "none";
+    }
+
+    // 登录成功处理
+    function handleLoginSuccess(user) {
+        currentLoggedUser = user;
+        sessionStorage.setItem("lut_logged_user_complete", JSON.stringify(user));
+        showTimetablePage();
+    }
+
+    // 检查登录状态
+    function checkLoginState() {
+        const stored = sessionStorage.getItem("lut_logged_user_complete");
+        if(stored) {
+            try {
+                currentLoggedUser = JSON.parse(stored);
+                showTimetablePage();
+                return true;
+            } catch(e) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    // 退出登录
+    function logout() {
+        if(confirm("确定要退出登录吗？")) {
+            sessionStorage.removeItem("lut_logged_user_complete");
+            currentLoggedUser = null;
+            showLoginPage();
+            // 清空登录表单
+            document.getElementById("loginUsername").value = "";
+            document.getElementById("loginPassword").value = "";
+            document.getElementById("loginMsg").innerHTML = "";
+        }
+    }
+
+    // ================= 课程数据模型 =================
+    const allCourses = [
+        { name: "计算机硬件综合训练II[01]", weeks: [18,19], days: ["星期一","星期二","星期三","星期四","星期五"], slots: ["第1节-第2节","第3节-第4节","第5节-第6节","第7节-第8节"], detail: "整周实训(1-8节)", location: "实训中心" },
+        { name: "软件工程B[03]", weeks: [1,12], days: ["星期三","星期五"], slots: ["第1节-第2节"], detail: "理论课", location: "敦雅楼C203" },
+        { name: "Java Web开发技术[01]", weeks: [1,12], days: ["星期四"], slots: ["第1节-第2节"], detail: "理论课", location: "观成楼306" },
+        { name: "专业外语[01]", weeks: [1,8], days: ["星期一","星期五"], slots: ["第3节-第4节"], detail: "专业英语", location: "敦雅楼C203" },
+        { name: "算法设计与分析[01]", weeks: [4,9], days: ["星期一","星期五"], slots: ["第5节-第6节"], detail: "算法设计与分析", location: "敦雅楼B204" },
+        { name: "嵌入式系统[03]", weeks: [1,10], days: ["星期一","星期三"], slots: ["第5节-第6节"], detail: "嵌入式系统开发", location: "敦雅楼C203" },
+        { name: "形势与政策6[06]", weeks: [5,6], days: ["星期四"], slots: ["第5节-第6节"], detail: "形势与政策", location: "集贤楼308" },
+        { name: "计算机视觉[01]", weeks: [1,12], days: ["星期二"], slots: ["第9节-第10节"], detail: "计算机视觉", location: "敦雅楼C203" }
+    ];
+
+    const timeSlots = ["第1节-第2节", "第3节-第4节", "第5节-第6节", "第7节-第8节", "第9节-第10节"];
+    const weekDays = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
+
+    function isWeekInRange(week, weeksDef) {
+        return week >= weeksDef[0] && week <= weeksDef[1];
+    }
+
+    function getCoursesForWeek(week) {
+        const weekSchedule = {};
+        weekDays.forEach(day => {
+            weekSchedule[day] = {};
+            timeSlots.forEach(slot => {
+                weekSchedule[day][slot] = [];
+            });
+        });
+
+        allCourses.forEach(course => {
+            if(isWeekInRange(week, course.weeks)) {
+                course.days.forEach(day => {
+                    course.slots.forEach(slot => {
+                        if(weekSchedule[day] && weekSchedule[day][slot]) {
+                            weekSchedule[day][slot].push({
+                                name: course.name,
+                                detail: course.detail,
+                                location: course.location,
+                                weeksRange: `${course.weeks[0]}-${course.weeks[1]}周`
+                            });
+                        }
+                    });
+                });
+            }
+        });
+        return weekSchedule;
+    }
+
+    function renderTimetable() {
+        const weekData = getCoursesForWeek(currentWeek);
+        const tbody = document.getElementById("timetableBody");
+        tbody.innerHTML = "";
+        
+        for(let slot of timeSlots) {
+            const row = tbody.insertRow();
+            const timeCell = row.insertCell(0);
+            timeCell.className = "time-slot";
+            timeCell.innerText = slot;
+            
+            for(let day of weekDays) {
+                const cell = row.insertCell();
+                const courses = weekData[day]?.[slot] || [];
+                if(courses.length === 0) {
+                    cell.innerHTML = '<span class="no-course">— 无课程 —</span>';
+                } else {
+                    let html = "";
+                    courses.forEach(c => {
+                        html += `<div class="course-item">
+                                    <div class="course-name">${escapeHtml(c.name)}</div>
+                                    <div class="course-detail">
+                                        <i class="fas fa-book-open"></i> ${escapeHtml(c.detail)}<br>
+                                        <i class="fas fa-location-dot"></i> ${c.location ? c.location : '待定'} | ${c.weeksRange}
+                                    </div>
+                                </div>`;
+                    });
+                    cell.innerHTML = html;
+                }
+            }
+        }
+        updateNoticeArea();
+    }
+
+    function updateNoticeArea() {
+        const noticeDiv = document.getElementById("noticeArea");
+        let weekInfo = "";
+        let additionalInfo = "";
+        
+        if(currentWeek >= 18 && currentWeek <= 19) {
+            weekInfo = "🔧 当前为实训周，计算机硬件综合训练II集中进行（全天实训）。";
+            additionalInfo = "请携带实验器材，按时到达实训中心。";
+        } else if(currentWeek >= 1 && currentWeek <= 12) {
+            weekInfo = "📚 常规教学周，所有理论课程正常进行。";
+            additionalInfo = "请按时上课，注意教室安排。";
+        } else if(currentWeek >= 13 && currentWeek <= 17) {
+            weekInfo = "📖 复习考试周，部分课程已结课，请关注考试安排。";
+            additionalInfo = "期末考试时间请以教务通知为准。";
+        } else {
+            weekInfo = "⏸️ 假期或非教学周，请留意教务通知。";
+            additionalInfo = "如有补课安排，会另行通知。";
+        }
+        
+        const hasCourses = getCoursesForWeek(currentWeek);
+        let courseCount = 0;
+        for(let day of weekDays) {
+            for(let slot of timeSlots) {
+                if(hasCourses[day][slot].length > 0) courseCount++;
+            }
+        }
+        
+        noticeDiv.innerHTML = `
+            <p><i class="fas fa-calendar-week"></i> <strong>📅 第${currentWeek}周课程安排</strong></p>
+            <p><i class="fas fa-info-circle"></i> ${weekInfo}</p>
+            <p><i class="fas fa-chalkboard-user"></i> 本周共 ${courseCount} 节课次</p>
+            <p><i class="fas fa-clock"></i> <strong>上课时间暂未确定的课程：</strong> 工程经济学(青岛理工大学)[588008] 1-10周</p>
+            <p><i class="fas fa-map-marker-alt"></i> <strong>教室索引：</strong> 敦雅楼C203 / 观成楼306 / 集贤楼308 / 实训中心</p>
+            <p><i class="fas fa-bell"></i> ${additionalInfo}</p>
+        `;
+    }
+
+    function updateWeekDisplay() {
+        document.getElementById("currentWeekDisplay").innerText = `第${currentWeek}周`;
+        renderTimetable();
+    }
+
+    function prevWeek() {
+        if(currentWeek > 1) {
+            currentWeek--;
+            updateWeekDisplay();
+        } else {
+            alert("已是第1周，无法继续减少");
+        }
+    }
+
+    function nextWeek() {
+        if(currentWeek < 20) {
+            currentWeek++;
+            updateWeekDisplay();
+        } else {
+            alert("已是第20周，无法继续增加");
+        }
+    }
+
+    function escapeHtml(str) { 
+        if(!str) return '';
+        return str.replace(/[&<>]/g, function(m){
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    // ================= 登录注册事件绑定 =================
+    document.getElementById("loginFormElement").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const loginId = document.getElementById("loginUsername").value.trim();
+        const pwd = document.getElementById("loginPassword").value.trim();
+        const msgBox = document.getElementById("loginMsg");
+        if(!loginId || !pwd) { 
+            msgBox.innerHTML = "请填写完整信息"; 
+            msgBox.style.color = "#d9534f"; 
+            return; 
+        }
+        const users = getUsers();
+        const user = users.find(u => (u.studentId === loginId || u.email === loginId) && u.password === pwd);
+        if(user) {
+            msgBox.innerHTML = "✅ 登录成功，加载课表中..."; 
+            msgBox.style.color = "#2e7d32";
+            setTimeout(() => { handleLoginSuccess(user); }, 500);
+        } else {
+            msgBox.innerHTML = "❌ 账号或密码错误"; 
+            msgBox.style.color = "#d9534f";
+        }
+    });
+
+    document.getElementById("registerFormElement").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const name = document.getElementById("regName").value.trim();
+        const sid = document.getElementById("regStudentId").value.trim();
+        const email = document.getElementById("regEmail").value.trim();
+        const pwd = document.getElementById("regPassword").value.trim();
+        const cpwd = document.getElementById("regConfirmPwd").value.trim();
+        const msg = document.getElementById("regMsg");
+        if(!name||!sid||!email||!pwd||!cpwd) { 
+            msg.innerHTML="所有字段必填"; 
+            msg.style.color="#d9534f"; 
+            return; 
+        }
+        if(pwd !== cpwd) { 
+            msg.innerHTML="密码不一致"; 
+            msg.style.color="#d9534f"; 
+            return; 
+        }
+        if(pwd.length<6) { 
+            msg.innerHTML="密码至少6位"; 
+            msg.style.color="#d9534f"; 
+            return; 
+        }
+        const users = getUsers();
+        if(users.find(u=>u.studentId===sid)) { 
+            msg.innerHTML="学号已注册"; 
+            msg.style.color="#d9534f"; 
+            return; 
+        }
+        if(users.find(u=>u.email===email)) { 
+            msg.innerHTML="邮箱已被绑定"; 
+            msg.style.color="#d9534f"; 
+            return; 
+        }
+        const newUser = { name, studentId: sid, email, password: pwd };
+        users.push(newUser);
+        saveUsers(users);
+        msg.innerHTML = "✅ 注册成功！请登录"; 
+        msg.style.color="#2e7d32";
+        setTimeout(() => {
+            switchToLoginTab();
+            document.getElementById("loginUsername").value = sid;
+        }, 1000);
+    });
+
+    function switchToLoginTab() {
+        document.getElementById("tabLoginBtn").classList.add("active");
+        document.getElementById("tabRegBtn").classList.remove("active");
+        document.getElementById("loginForm").classList.add("active-form");
+        document.getElementById("registerForm").classList.remove("active-form");
+        document.getElementById("loginMsg").innerHTML = "";
+        document.getElementById("regMsg").innerHTML = "";
+    }
+    
+    function switchToRegTab() {
+        document.getElementById("tabRegBtn").classList.add("active");
+        document.getElementById("tabLoginBtn").classList.remove("active");
+        document.getElementById("registerForm").classList.add("active-form");
+        document.getElementById("loginForm").classList.remove("active-form");
+        document.getElementById("loginMsg").innerHTML = "";
+        document.getElementById("regMsg").innerHTML = "";
+    }
+    
+    document.getElementById("tabLoginBtn").addEventListener("click", switchToLoginTab);
+    document.getElementById("tabRegBtn").addEventListener("click", switchToRegTab);
+    document.getElementById("switchToReg").addEventListener("click", (e) => { e.preventDefault(); switchToRegTab(); });
+    document.getElementById("switchToLogin").addEventListener("click", (e) => { e.preventDefault(); switchToLoginTab(); });
+    document.getElementById("logoutBtn").addEventListener("click", logout);
+    document.getElementById("prevWeekBtn").addEventListener("click", prevWeek);
+    document.getElementById("nextWeekBtn").addEventListener("click", nextWeek);
+
+    // 初始化
+    if(!checkLoginState()) {
+        showLoginPage();
+    }
+</script>
+</body>
+</html>
